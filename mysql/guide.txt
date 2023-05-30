@@ -4,6 +4,40 @@ docker inspect <container_name_or_id> | grep IPAddress
 
 how to connect it to node js application- 
 
+
+
+
+1. by using create connection:-
+
+
+import mysql from 'mysql'
+
+const cn = mysql.createConnection({
+    // host: 'db',
+    host: '172.22.0.3', // Service name defined in Docker Compose file
+    user: 'shash', // MySQL username
+    password: '12345678', // MySQL password
+    database: 'zomato_data', // MySQL database name
+})
+
+const cncheck = () =>{
+    cn.connect((err)=>{
+        if(err){
+            console.log(err);
+        }
+        else{
+            console.log("connection successfull");
+            
+        }
+    })
+}
+
+export default cncheck
+
+
+
+2. by using createPool
+
 import { createPool } from "mysql";
 
 const pool = createPool({
