@@ -1,8 +1,21 @@
-docker run --name mysql -d \
-    -p 3306:3306 \
-    -e MYSQL_ROOT_PASSWORD=change-me \
-    --restart unless-stopped \
-    mysql:8
+version: '3.1'
 
+services:
 
-# refrence: https://earthly.dev/blog/docker-mysql/
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: zomato_data
+      MYSQL_USER: shash
+      MYSQL_PASSWORD: 12345678
+    ports:
+      - 3608:3606
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080

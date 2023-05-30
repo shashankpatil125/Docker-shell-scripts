@@ -1,0 +1,35 @@
+we neet to mention here dns of our virtual machine by using following command 
+docker inspect <container_name_or_id> | grep IPAddress
+
+
+how to connect it to node js application- 
+
+import { createPool } from "mysql";
+
+const pool = createPool({
+  connectionLimit: 10,
+  host: '172.22.0.3', // Service name defined in Docker Compose file
+  user: 'shash', // MySQL username
+  password: '12345678', // MySQL password
+  database: 'zomato_data', // MySQL database name
+});
+
+export default function check() {
+  pool.getConnection((error, connection) => {
+    if (error) {
+      console.error('Error connecting to the database:', error);
+      return;
+    }
+
+    console.log('Connected to the database!');
+    connection.release(); // Release the connection back to the pool
+
+    // Proceed with further operations or queries here
+
+    // Close the connection pool gracefully on application exit
+    process.on('SIGINT', () => {
+      pool.end();
+      process.exit(0);
+    });
+  });
+}
